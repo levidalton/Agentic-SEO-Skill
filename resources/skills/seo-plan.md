@@ -53,14 +53,14 @@ description: >
 ```
 
 #### Pillar Page Requirements
-- **Word count**: 3,000-5,000 words (comprehensive overview)
+- **Coverage**: Provide a useful overview of every major subtopic without padding, then link to deeper material.
 - **Structure**: Covers all major subtopics at surface level, links to each cluster article for depth
 - **Target keyword**: Head term (e.g., "cobalt strike beacon")
 - **Internal links**: Bidirectional links to/from every cluster article
 - **Schema**: Add `Article` or `WebPage` schema with `about` and `mentions` properties
 
 #### Cluster Article Requirements
-- **Word count**: 1,500-3,000 words (deep dive on one aspect)
+- **Coverage**: Resolve one distinct audience question in the depth the topic requires.
 - **Target keyword**: Long-tail variant (e.g., "cobalt strike beacon sleep mask")
 - **Internal links**: Must link back to pillar page + 2-3 sibling cluster articles
 - **Freshness**: Update cluster articles when new information becomes available
@@ -152,4 +152,3 @@ Load from `resources/templates/`:
 - Resource requirements defined
 - Dependencies identified
 - Risk mitigation strategies
-

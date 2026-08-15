@@ -7,20 +7,20 @@
 - **Title Tag**: 50-60 characters, front-load main keyword, include numbers/brackets (e.g., "[2026 Guide]")
 - **Meta Description**: 140-160 characters, natural language, clear value proposition
 - **H1 Heading**: Only ONE per page, closely matching title tag
-- **Introduction**: Hook the reader, state the problem, explain what they will learn (include primary keyword in first 100 words)
+- **Introduction**: Orient the reader, state the problem, and explain what they will learn; name the topic early when natural.
 - **Body**: Use H2s for main sections, H3s for subsections
 - **Conclusion**: Summarize key points, clear Call To Action (CTA)
 
-### Minimum Requirements
-- **Word Count**: 1,200+ words (longer for competitive keywords)
-- **Paragraph Length**: 2-4 sentences max for scanability
-- **Images**: At least 1 hero image + 1 image per 400 words
+### Content requirements
+- **Coverage**: Answer the reader's query completely without padding; record length only as descriptive evidence.
+- **Paragraphs**: Use readable paragraph breaks that match the subject and audience.
+- **Images**: Add a hero or explanatory visuals only when they improve understanding.
 - **Image Alt Text**: Descriptive, naturally include keywords where relevant
 
 ## Internal & External Linking
 
-- **Internal Links**: 3-5 links to other relevant content on your site (use descriptive anchor text)
-- **External Links**: 2-3 links to high-authority, non-competing external sources (Wikipedia, research studies, official documentation)
+- **Internal Links**: Link to relevant supporting content using descriptive anchor text where it helps the reader.
+- **External Links**: Cite authoritative primary sources for material claims when available.
 
 ## Keyword Optimization Strategy
 
@@ -28,13 +28,13 @@
    - URL slug
    - Title tag
    - H1 heading
-   - First 100 words
-   - 1-2 times in H2s
-   - Natural distribution in body (1-2% density)
+   - Opening where natural
+   - Descriptive headings where relevant
+   - Natural terminology in the body; never target keyword density
 
 2. **LSI / Secondary Keywords**:
    - Include in H2/H3 subheadings
-   - Sprinkle naturally throughout content
+   - Use naturally where the terms improve precision
    - Use in image alt text
 
 ## E-E-A-T (Experience, Expertise, Authoritativeness, Trustworthiness)

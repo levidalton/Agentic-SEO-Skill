@@ -130,7 +130,7 @@
 
 ## Content Strategy
 
-### Service Pages (min 800 words)
+### Service pages
 - Clear value proposition
 - Methodology overview
 - Deliverables list
@@ -138,14 +138,14 @@
 - Team members who deliver this service
 - CTA to schedule consultation
 
-### Industry Pages (min 800 words)
+### Industry pages
 - Industry-specific challenges
 - How you solve them differently
 - Relevant case studies
 - Industry credentials/experience
 - Client logos (with permission)
 
-### Case Studies (min 1,000 words)
+### Case studies
 - Executive summary
 - Client background
 - Challenge details

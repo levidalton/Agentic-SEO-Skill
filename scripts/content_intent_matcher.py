@@ -101,7 +101,10 @@ def match_intent(source: str, keyword: str, intent: str | None = None, timeout: 
     if not marker_hits:
         issues.append({"severity": "info", "message": f"No clear {target_intent} intent markers found in body copy."})
     if parsed.get("word_count", 0) < 300:
-        issues.append({"severity": "warning", "message": "Page body is short for intent matching evidence."})
+        issues.append({
+            "severity": "info",
+            "message": "The page is concise; verify manually that it fully satisfies the intended query. Length alone is not a defect.",
+        })
 
     return {
         "url": url or source,

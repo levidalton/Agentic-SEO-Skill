@@ -82,9 +82,8 @@ def check_llms_txt(url: str, timeout: int = 15) -> dict:
             _parse_llms_txt(resp.text, result)
             _score_quality(result)
         elif resp.status_code == 404:
-            result["quality"]["issues"].append("🔴 No llms.txt found")
-            result["quality"]["suggestions"].append(
-                "Create /llms.txt with site name, description, and key page links"
+            result["quality"]["issues"].append(
+                "ℹ️ No llms.txt found. This optional proposal is not used by Google Search."
             )
     except requests.exceptions.RequestException as e:
         result["error"] = str(e)
@@ -203,7 +202,7 @@ def _score_quality(result: dict):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Check llms.txt for AI search optimization")
+    parser = argparse.ArgumentParser(description="Inspect optional llms.txt metadata without treating absence as an SEO defect")
     parser.add_argument("url", help="Website URL or domain")
     parser.add_argument("--json", "-j", action="store_true", help="Output as JSON")
 
@@ -235,7 +234,7 @@ def main():
     if result["full_exists"]:
         print(f"\nllms-full.txt: ✅ Found")
     else:
-        print(f"\nllms-full.txt: ❌ Not found")
+        print(f"\nllms-full.txt: — Not present (optional)")
 
     if result["quality"]["issues"]:
         print(f"\nIssues:")

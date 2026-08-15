@@ -55,14 +55,12 @@ This template applies to businesses that don't fit neatly into SaaS, local servi
 
 ## Content Quality Standards
 
-### Minimum Word Counts
-| Page Type | Min Words |
-|-----------|-----------|
-| Homepage | 500 |
-| Product/Service | 800 |
-| Blog Post | 1,500 |
-| About Page | 400 |
-| Landing Page | 600 |
+### Purpose-based content review
+- Homepage: make the offer, audience, differentiation, and next step clear.
+- Product/service page: answer fit, features, proof, limitations, and purchase questions.
+- Blog post: satisfy the query with accurate, original information and useful examples.
+- About page: establish real people, experience, credentials, and contact context.
+- Landing page: match its acquisition intent and support every material claim.
 
 ### E-E-A-T Essentials
 1. **Experience**: Share real examples and case studies
@@ -140,5 +138,5 @@ Adjust this template based on:
 - [ ] Provide original data, research, or unique perspectives AI cannot find elsewhere
 - [ ] Maintain consistent entity information (brand, people, products) across the web
 - [ ] Structure content with clear headings, definitions, and step-by-step formats
-- [ ] Consider adding an `llms.txt` file at site root (emerging convention for AI crawlers — Google treats it as a regular text file)
+- [ ] Add `llms.txt` only when a named target service documents support; Google Search does not use it for ranking or generative-search visibility
 - [ ] Monitor AI citation across Google AI Overviews, ChatGPT, Perplexity, and Bing Copilot

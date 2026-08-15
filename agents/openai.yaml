@@ -1,0 +1,6 @@
+interface:
+  display_name: "Evidence-First SEO Audit"
+  short_description: "SEO audits and search-led copywriting"
+  default_prompt: "Use $seo-audit to audit this URL and prioritize verified fixes."
+policy:
+  allow_implicit_invocation: true

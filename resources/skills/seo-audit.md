@@ -74,7 +74,7 @@ Delay between requests: 1 second
 
 ### Content Quality
 - E-E-A-T assessment
-- Thin content pages
+- Pages showing specific evidence of low value, duplication, or unmet intent; length alone does not qualify
 - Duplicate content issues
 - Readability scores
 

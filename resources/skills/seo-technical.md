@@ -62,7 +62,7 @@ Allow: /
 ### 2. Indexability
 - Canonical tags: self-referencing, no conflicts with noindex
 - Duplicate content: near-duplicates, parameter URLs, www vs non-www
-- Thin content: pages below minimum word counts per type
+- Low-value or duplicative content: flag only with evidence beyond length, such as missing answers, templated substitution, or no original value
 - Pagination: rel=next/prev or load-more pattern
 - Hreflang: correct for multi-language/multi-region sites
 - Index bloat: unnecessary pages consuming crawl budget
@@ -165,7 +165,7 @@ Voice search (Google Assistant, Siri, Alexa, Cortana) selects answers primarily 
 |-------|-------------|----------------|
 | Page speed | TTFB < 2s (critical — voice results heavily favor fast pages) | < 2000ms |
 | HTTPS | Required for voice results | Must be HTTPS |
-| Featured Snippet | Direct answer in first 40-55 words after H-tag | Present |
+| Featured Snippet | Direct answer follows the relevant heading promptly and accurately | Present |
 | FAQ phrasing | H2/H3 phrased as natural language questions | ≥ 3 question H-tags |
 | Local schema | LocalBusiness with address, phone, hours (local intent queries) | If local business |
 | `speakable` schema | Marks top answer paragraphs for Google Assistant | Recommended |

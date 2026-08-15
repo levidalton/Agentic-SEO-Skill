@@ -12,7 +12,7 @@ def load_script(name):
     return module
 
 
-def test_noindex_thin_page_is_skipped():
+def test_noindex_short_page_is_skipped():
     duplicate_content = load_script("duplicate_content")
     report = duplicate_content.detect_duplicates({
         "https://example.com/utility": {
@@ -22,8 +22,25 @@ def test_noindex_thin_page_is_skipped():
         },
     })
 
-    assert report["thin_content"] == []
-    assert report["summary"]["thin_pages"] == 0
+    assert report["content_depth_review"] == []
+    assert report["summary"]["short_pages_for_review"] == 0
+
+
+def test_short_page_is_informational_and_has_no_word_count_target():
+    duplicate_content = load_script("duplicate_content")
+    report = duplicate_content.detect_duplicates({
+        "https://example.com/brief": {
+            "text": "A concise page that may fully serve a narrow purpose.",
+            "word_count": 10,
+            "html": "<html><body>A concise page that may fully serve a narrow purpose.</body></html>",
+        },
+    })
+
+    item = report["content_depth_review"][0]
+    assert item["severity"] == "Info"
+    assert "length alone is not an SEO defect" in item["finding"]
+    assert "threshold" not in item
+    assert "at least" not in item["fix"]
 
 
 def test_noindex_near_duplicate_pair_is_downgraded():

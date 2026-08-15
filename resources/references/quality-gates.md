@@ -2,44 +2,50 @@
 
 # Content Quality Gates
 
-## Minimum Word Counts by Page Type
+## Editorial Review Prompts by Page Type
 
-| Page Type | Min Words | Unique Content % | Notes |
-|-----------|-----------|-----------------|-------|
-| Homepage | 500 | 100% | Must clearly communicate value proposition |
-| Service / Feature Page | 800 | 100% | Detailed explanation of offering |
-| Location (Primary) | 600 | 60%+ | City headquarters or main service area |
-| Location (Secondary) | 500 | 40%+ | Satellite locations |
-| Blog Post | 1,500 | 100% | In-depth, valuable content |
-| Product Page | 400 | 80%+ | Unique descriptions, specs |
-| Category Page | 400 | 100% | Unique intro, not just product listings |
-| About Page | 400 | 100% | Company story, team, values |
-| Landing Page | 600 | 100% | Focused conversion content |
-| FAQ Page | 800 | 100% | Comprehensive Q&A |
+Google does not prescribe a preferred word count. The figures below are optional review prompts inherited from the upstream project, not ranking requirements, pass/fail gates, or recommended writing targets. Do not penalize a page for length alone. Evaluate whether it answers the intended audience's needs with original, accurate, useful information.
+
+When reporting, describe the observed coverage gap instead of saying a page is "too short."
+
+Review the page against its purpose:
+
+| Page Type | Evidence to review |
+|-----------|--------------------|
+| Homepage | Clear identity, audience, offering, differentiation, and next step |
+| Service / Feature Page | Accurate scope, process, constraints, proof, and decision-making details |
+| Location Page | Genuine service-area relevance and facts that are not city-name substitution |
+| Article | Original reporting, analysis, experience, or a complete answer to the stated question |
+| Product Page | Accurate specifications, availability, media, policies, and useful comparison context |
+| Category Page | Useful organization and guidance beyond a list of links or products |
+| About Page | Verifiable company identity, people, history, and trust information |
+| Landing Page | Clear offer and conversion path without unsupported claims |
+| FAQ Page | Real customer questions answered accurately and without schema promises |
 
 ---
 
 ## Location Page Thresholds
 
-### Warning Level (30+ pages)
-- ⚠️ **WARNING** at 30+ location pages
-- Enforce 60%+ unique content per page
+### Manual Review Prompt (30+ pages)
+- Increase representative sampling at 30+ location pages
+- Measure duplication and verify that each sampled page serves a distinct user need
 - Content must include:
   - Unique local information (landmarks, neighborhoods)
   - Location-specific services or offerings
   - Local team or staff information
   - Genuine customer testimonials from that area
 
-### Hard Stop (50+ pages)
-- 🛑 **HARD STOP** at 50+ location pages
-- Require explicit user justification
-- Must demonstrate:
+### Expanded Sampling Prompt (50+ pages)
+- Expand duplicate-content and doorway-pattern sampling at 50+ location pages
+- Look for evidence of:
   - Legitimate business presence in each location
   - Unique content strategy for each page
   - Local signals (Google Business Profile, local reviews)
 
 ### Why This Matters
-Google's doorway page algorithm penalizes programmatic location pages with thin/duplicate content. Signs of doorway pages:
+These page counts are internal workflow prompts, not thresholds published by Google.
+
+Google's spam policies prohibit doorway abuse. Programmatic location pages deserve closer review when they funnel users through substantially similar pages. Warning signs include:
 - Only city/state name changed between pages
 - No unique local information
 - No local business signals
@@ -128,7 +134,7 @@ Google's doorway page algorithm penalizes programmatic location pages with thin/
 
 | Page Type | Internal Links Target |
 |-----------|----------------------|
-| Blog post (1,500+ words) | 5-10 internal links |
+| Long-form article | Link to relevant supporting and next-step pages where useful |
 | Service page | 3-5 internal links |
 | Category page | Links to all child pages |
 | Product page | 2-4 internal links |

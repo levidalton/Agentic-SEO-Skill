@@ -19,6 +19,12 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: Install test dependencies
+        run: python -m pip install pytest PyYAML -r requirements.txt
+
+      - name: Run tests
+        run: python -m pytest -q
+
       - name: Compile Python scripts
         run: python -m compileall scripts
 
@@ -27,3 +33,33 @@ jobs:
 
       - name: Check reference freshness markers
         run: python scripts/reference_freshness.py resources/references --max-age-days 90
+
+  powershell-installer:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Validate safe PowerShell installation
+        shell: pwsh
+        run: |
+          $env:CODEX_HOME = Join-Path $env:RUNNER_TEMP 'codex-home'
+          ./install.ps1 --target codex --source local
+          if (-not (Test-Path (Join-Path $env:CODEX_HOME 'skills/seo-audit/LICENSE'))) {
+            throw 'Installed skill is missing LICENSE'
+          }
+          if (-not (Test-Path (Join-Path $env:CODEX_HOME 'skills/seo-audit/NOTICE.md'))) {
+            throw 'Installed skill is missing NOTICE.md'
+          }
+          try {
+            ./install.ps1 --target codex --skill-name '../../escaped' --source local
+            throw 'Traversal attempt unexpectedly succeeded'
+          } catch {
+            if ($_.Exception.Message -notmatch 'one safe path component') { throw }
+          }

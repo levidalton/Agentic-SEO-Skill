@@ -36,16 +36,10 @@
 
 ## Quality Gates
 
-### Location Page Limits
-- ⚠️ **WARNING** at 30+ location pages
-- 🛑 **HARD STOP** at 50+ location pages
-
-### Unique Content Requirements
-| Page Type | Min Words | Unique % |
-|-----------|-----------|----------|
-| Primary Location | 600 | 60%+ |
-| Service Area | 500 | 40%+ |
-| Service Page | 800 | 100% |
+### Location Page Review
+- Every page must serve a distinct user need and contain accurate local information.
+- Pause generation when pages differ mainly by substituted names or locations.
+- Document who will verify facts and maintain each page before publishing at scale.
 
 ### What Makes Location Pages Unique
 - Local landmarks and neighborhoods

@@ -34,7 +34,7 @@ jobs:
           # Skill runtime allowlist. Repository assets such as tests/, docs/,
           # CI, README, governance files, and packaging metadata are not needed
           # inside installed skill bundles.
-          for path in SKILL.md scripts resources; do
+          for path in LICENSE NOTICE.md SKILL.md agents scripts resources; do
             rsync -a \
               --exclude='__pycache__/' \
               --exclude='*.pyc' \
@@ -48,6 +48,10 @@ jobs:
           # auto-detect either layout.
           (cd "${STAGE}" && zip -r "${GITHUB_WORKSPACE}/dist/${PKG_NAME}.zip" .)
           (cd "${STAGE}" && tar -czf "${GITHUB_WORKSPACE}/dist/${PKG_NAME}.tar.gz" .)
+          unzip -l "dist/${PKG_NAME}.zip" | grep -E '(^|[[:space:]])LICENSE$'
+          unzip -l "dist/${PKG_NAME}.zip" | grep -E '(^|[[:space:]])NOTICE.md$'
+          tar -tzf "dist/${PKG_NAME}.tar.gz" | grep -E '^\./LICENSE$|^LICENSE$'
+          tar -tzf "dist/${PKG_NAME}.tar.gz" | grep -E '^\./NOTICE.md$|^NOTICE.md$'
           ls -la dist/
 
       - name: Upload workflow artifact

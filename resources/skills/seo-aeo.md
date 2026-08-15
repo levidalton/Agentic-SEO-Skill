@@ -20,7 +20,7 @@ AEO targets **zero-click rich results** in both traditional search and AI-powere
 | **People Also Ask** (AEO) | Question-intent pages, conversational H-tags | Question-phrased H2/H3, concise 30-50 word answer |
 | **Knowledge Panel** (AEO) | Entity KG match (Wikipedia/Wikidata) | `sameAs`, Organization/Person schema, entity disambiguation |
 | **Sitelinks Searchbox** (AEO) | Site authority + WebSite schema | `WebSite` + `SearchAction` schema |
-| **AI Overview** (GEO) | Passage-level citability, brand authority | `llms.txt`, structured data, citation-ready prose |
+| **AI Overview** (GEO) | Useful original content and sound technical SEO | Foundational SEO; no special file or markup is required |
 
 ## Audit Checklist
 
@@ -33,15 +33,15 @@ AEO targets **zero-click rich results** in both traditional search and AI-powere
 **Optimization requirements:**
 
 #### Paragraph Snippet (most common for informational queries)
-- [ ] Direct answer in the **first 40-55 words** of the first paragraph after a relevant H2 or H3
+- [ ] Direct answer appears promptly after a relevant H2 or H3 when a paragraph snippet matches the query
 - [ ] Answer starts with the keyword or a variant: "X is...", "X refers to...", "To do X..."
 - [ ] No jargon in the first answer sentence — plain language
-- [ ] Supporting context paragraph follows (2-4 sentences)
+- [ ] Supporting context follows in the depth the answer requires
 
 #### List Snippet (procedures, rankings, comparisons)
 - [ ] Use `<ol>` (ordered) or `<ul>` (unordered) immediately after the H2/H3 question
-- [ ] 5-9 list items — more than 9 triggers "more items" truncation
-- [ ] Each item ≤ 12 words for clean display
+- [ ] List includes only the steps or items needed to answer the query clearly
+- [ ] Each item is concise enough to scan without sacrificing accuracy
 - [ ] H2/H3 must be phrased as the actual question users search
 
 #### Table Snippet (comparisons, pricing, specifications)
@@ -152,7 +152,7 @@ Appears when users search your brand directly. Requires:
 ### Featured Snippet Readiness
 - Current ownership: [Yes/No/Unknown]
 - Answer block present: [Yes/No] — [Location if found]
-- Answer word count: [N] words (target: 40-55)
+- Answer length: [N] words (descriptive only; evaluate clarity and completeness)
 - Confidence: [Confirmed/Likely/Hypothesis]
 
 ### PAA Coverage

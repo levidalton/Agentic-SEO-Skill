@@ -7,7 +7,7 @@
 Always use **JSON-LD** (`<script type="application/ld+json">`).
 Google's documentation explicitly recommends JSON-LD over Microdata and RDFa.
 
-**AI Search Note:** Content with proper schema has ~2.5× higher chance of appearing in AI-generated answers (confirmed by Google and Microsoft, March 2025).
+**Evidence boundary:** Structured data can make a page eligible for supported search features. Do not claim that it guarantees display, ranking gains, or AI citations.
 
 ---
 

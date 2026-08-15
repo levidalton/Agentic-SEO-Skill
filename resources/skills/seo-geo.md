@@ -4,13 +4,17 @@ description: >
   Optimize content for AI Overviews (formerly SGE), ChatGPT web search,
   Perplexity, and other AI-powered search experiences. Generative Engine
   Optimization (GEO) analysis including brand mention signals, AI crawler
-  accessibility, llms.txt compliance, passage-level citability scoring, and
+  accessibility, optional llms.txt inspection, passage-level citability scoring, and
   platform-specific optimization. Use when user says "AI Overviews", "SGE",
   "GEO", "AI search", "LLM optimization", "Perplexity", "AI citations",
   "ChatGPT search", or "AI visibility".
 ---
 
 # AI Search / GEO Optimization (February 2026)
+
+## Evidence Warning
+
+Treat every numeric claim, correlation, platform-specific tactic, and scoring weight in this file as a third-party hypothesis until its named source and methodology are checked live. Apply `resources/references/source-policy.md`. Google specifically advises relying on foundational SEO instead of special AEO/GEO tactics and states that Google Search ignores `llms.txt`.
 
 ## Key Statistics
 
@@ -43,12 +47,12 @@ description: >
 
 ### 1. Citability Score (25%)
 
-**Optimal passage length: 134-167 words** for AI citation.
+Treat passage length as descriptive evidence, not a universal AI-citation target. Prefer self-contained passages whose length follows the question and supporting evidence.
 
 **Strong signals:**
 - Clear, quotable sentences with specific facts/statistics
 - Self-contained answer blocks (can be extracted without context)
-- Direct answer in first 40-60 words of section
+- Direct answer near the beginning of a section when that structure serves the query
 - Claims attributed with specific sources
 - Definitions following "X is..." or "X refers to..." patterns
 - Unique data points not found elsewhere
@@ -112,7 +116,7 @@ Content with multi-modal elements sees **156% higher selection rates**.
 **Check for:**
 - Server-side rendering (SSR) vs client-only content
 - AI crawler access in robots.txt
-- llms.txt file presence and configuration
+- Optional llms.txt presence, reported without a Google ranking recommendation
 - RSL 1.0 licensing terms
 
 ---
@@ -139,9 +143,11 @@ Check `robots.txt` for these AI crawlers:
 
 ## llms.txt Standard
 
-The emerging **llms.txt** standard provides AI crawlers with structured content guidance.
+The emerging **llms.txt** proposal provides optional structured content guidance for tools that explicitly support it. Google Search states that it ignores this file for ranking and generative-search visibility.
 
 **Location:** `/llms.txt` (root of domain)
+
+Do not score its absence as a defect or recommend creating it without a documented target consumer.
 
 **Format:**
 ```
@@ -193,7 +199,7 @@ Generate `GEO-ANALYSIS.md` with:
 1. **GEO Readiness Score: XX/100**
 2. **Platform breakdown** (Google AIO, ChatGPT, Perplexity scores)
 3. **AI Crawler Access Status** (which crawlers allowed/blocked)
-4. **llms.txt Status** (present, missing, recommendations)
+4. **Optional llms.txt Status** (informational; target consumer required for recommendations)
 5. **Brand Mention Analysis** (presence on Wikipedia, Reddit, YouTube, LinkedIn)
 6. **Passage-Level Citability** (optimal 134-167 word blocks identified)
 7. **Server-Side Rendering Check** (JavaScript dependency analysis)
@@ -209,7 +215,7 @@ Google Passage Indexing (active since 2021) ranks individual passages independen
 
 ### Rules for Passage-Optimized Content
 1. **Self-contained sections**: Each H2 block should fully answer one clear question without requiring context from other sections
-2. **Optimal passage length**: 100-200 words per block (sweet spot for both passage indexing and AI citation)
+2. **Focused passages**: Keep each section self-contained and as long as its answer requires; do not use a fixed length as a ranking proxy
 3. **Question-answer structure**: Use question-phrased H2/H3 followed by a direct answer in the first sentence
 4. **No pronoun-heavy openings**: Start sections with the full subject, not "It" or "This" referring to previous sections
 5. **Speakable schema**: Add `speakable` CSS selectors for your top answer passages
@@ -238,8 +244,8 @@ Google Passage Indexing (active since 2021) ranks individual passages independen
 
 ## Quick Wins
 
-1. Add "What is [topic]?" definition in first 60 words
-2. Create 134-167 word self-contained answer blocks
+1. Add a clear "What is [topic]?" definition where it matches real audience demand
+2. Create self-contained answer blocks with enough context and evidence to be useful
 3. Add question-based H2/H3 headings
 4. Include specific statistics with sources
 5. Add publication/update dates
@@ -248,12 +254,10 @@ Google Passage Indexing (active since 2021) ranks individual passages independen
 
 ## Medium Effort
 
-1. Create `/llms.txt` file
-2. Add author bio with credentials + Wikipedia/LinkedIn links
-3. Ensure server-side rendering for key content
-4. Build entity presence on Reddit, YouTube
-5. Add comparison tables with data
-6. Implement FAQ sections (structured, not schema for commercial sites)
+1. Add accurate author information when readers would reasonably expect it
+2. Ensure key content is available in rendered HTML
+3. Add useful comparison tables supported by original data
+4. Improve real entity consistency across authoritative profiles
 
 ## High Impact
 

@@ -39,29 +39,19 @@ Read `resources/references/eeat-framework.md` for full criteria.
 
 ## Content Metrics
 
-### Word Count Analysis
-Compare against page type minimums:
-| Page Type | Minimum |
-|-----------|---------|
-| Homepage | 500 |
-| Service page | 800 |
-| Blog post | 1,500 |
-| Product page | 300+ (400+ for complex products) |
-| Location page | 500-600 |
-
-> **Important:** These are **topical coverage floors**, not targets. Google has confirmed word count is NOT a direct ranking factor. The goal is comprehensive topical coverage — a 500-word page that thoroughly answers the query will outrank a 2,000-word page that doesn't. Use these as guidelines for adequate coverage depth, not rigid requirements.
+### Content Depth Analysis
+Record word count as descriptive evidence only. Evaluate whether the page answers the audience's likely questions accurately and completely, includes original value, and avoids filler. Do not assign a minimum length, penalize a short page solely for length, or recommend expansion without naming the missing information.
 
 ### Readability
 - Flesch Reading Ease: target 60-70 for general audience
 
 > **Note:** Flesch Reading Ease is a useful proxy for content accessibility but is NOT a direct Google ranking factor. John Mueller has confirmed Google does not use basic readability scores for ranking. Yoast deprioritized Flesch scores in v19.3. Use readability analysis as a content quality indicator, not as an SEO metric to optimize directly.
 - Grade level: match target audience
-- Sentence length: average 15-20 words
-- Paragraph length: 2-4 sentences
+- Sentence and paragraph rhythm: match the audience, subject, and reading context; vary structure naturally
 
 ### Keyword Optimization
-- Primary keyword in title, H1, first 100 words
-- Natural density (1-3%)
+- Primary topic is clear in the title, H1, and opening where natural
+- Natural terminology aligned with the page's intent; no density target
 - Semantic variations present
 - No keyword stuffing
 
@@ -78,7 +68,7 @@ Compare against page type minimums:
 - Charts/graphs for statistics
 
 ### Internal Linking
-- 3-5 relevant internal links per 1000 words
+- Useful contextual links to related content where they help the reader
 - Descriptive anchor text
 - Links to related content
 - No orphan pages
@@ -138,9 +128,9 @@ GEO is the emerging discipline of optimizing content specifically for AI-generat
 Google's Passage Indexing (active since 2021) ranks individual passages independently for specific long-tail queries. Optimize by:
 
 - Ensuring each major section (H2 or H3 block) is self-contained and answers one clear question
-- Keeping optimal passage length at 100-200 words per block
+- Keeping each passage focused enough to stand on its own without imposing a fixed length
 - Using descriptive headings that provide context even if the passage is extracted
-- Front-loading the direct answer in the first 40-50 words of the passage
+- Answering the section's question promptly when a direct answer fits the intent
 
 ## Content Freshness
 

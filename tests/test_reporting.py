@@ -15,7 +15,8 @@ def test_scoring_config_loads_weights_from_resource_file():
     config = generate_report.load_scoring_config()
     weights = generate_report.get_scoring_weights(config)
 
-    assert weights["pagespeed"] == 13
+    assert weights["pagespeed"] == 15
+    assert "llms_txt" not in weights
     assert sum(weights.values()) == 100
 
 
@@ -36,9 +37,24 @@ def test_markdown_report_contains_score_card_and_findings():
     markdown = generate_report.render_markdown_report(data, scores)
 
     assert "# Full Audit Report" in markdown
-    assert "| Performance and Core Web Vitals | 13 | 57 |" in markdown
+    assert "| Performance and Core Web Vitals | 15 | 57 |" in markdown
     assert "Content-Security-Policy is missing" in markdown
     assert "Score confidence: `High`" in markdown
+    assert "No llms.txt found" not in markdown
+
+
+def test_missing_llms_txt_is_informational_and_does_not_change_score():
+    data = load_report_data()
+    without_file = generate_report.calculate_overall_score(data)
+    data["sections"]["llms_txt"] = {
+        "exists": True,
+        "quality": {"score": 100, "issues": [], "suggestions": []},
+    }
+    with_file = generate_report.calculate_overall_score(data)
+
+    assert without_file["overall"] == with_file["overall"]
+    assert "llms_txt" not in without_file["weights"]
+    assert all(fix["title"] != "No llms.txt found" for fix in generate_report.build_environment_fixes(data))
 
 
 def test_action_plan_prioritizes_findings_and_pagespeed_opportunities():
