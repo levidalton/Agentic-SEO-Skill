@@ -42,16 +42,17 @@ When working with sitemaps:
 
 ## Quality Gates
 
-### Location Page Thresholds
-- ⚠️ **WARNING** at 30+ location pages: require 60%+ unique content per page
-- 🛑 **HARD STOP** at 50+ location pages: require explicit user justification
+### Location Page Review
+- Sample representative pages and verify that each serves a distinct user need.
+- Pause generation when pages differ mainly by substituted names or locations.
+- Require documented editorial and maintenance ownership before publishing at scale.
 
 ### Why This Matters
-Google's doorway page algorithm penalizes programmatic location pages with thin/duplicate content. Each location page must provide genuinely unique value.
+Location pages created mainly to rank for similar queries can violate Google's spam policies. Each page should provide genuinely distinct, useful value for its audience.
 
 ### Safe at Scale ✅
 - Integration pages (with real setup documentation)
-- Glossary pages (200+ word definitions)
+- Glossary pages (clear, accurate definitions with useful context)
 - Product pages (unique specs, reviews, UGC)
 - API documentation pages
 
@@ -59,7 +60,7 @@ Google's doorway page algorithm penalizes programmatic location pages with thin/
 - Location pages with only city name swapped
 - "Best [tool] for [industry]" without substantive content
 - AI-generated mass content without human editorial review
-- Pages with <40% unique content (per `duplicate_content.py`)
+- Pages that differ mainly by templated substitutions (review with `duplicate_content.py`)
 
 ## Sitemap Formats
 
@@ -130,5 +131,5 @@ Provide:
 ## Cross-Skill Delegation
 
 - For hreflang sitemap validation: defer to `seo-hreflang` sub-skill
-- For thin content detection in sitemap URLs: use `duplicate_content.py`
+- For duplicate-content and content-depth review across sitemap URLs: use `duplicate_content.py`
 - For IndexNow ping after sitemap updates: use `indexnow_checker.py`

@@ -10,8 +10,8 @@
 - **Step-by-Step Structure**: Break complex processes down into numbered steps with clear H2/H3 headings.
 - **Code Blocks**: Formatted correctly with syntax highlighting. Easily copyable.
 
-### Minimum Requirements
-- **Comprehensive Coverage**: Technical articles often need to be 2,000+ words to thoroughly explain concepts.
+### Content requirements
+- **Comprehensive Coverage**: Explain the task to the depth its audience needs, including assumptions, steps, verification, and relevant failure modes; do not add material to reach a length target.
 - **Visuals**: Use diagrams, architecture charts, and screenshots of terminal outputs or UI steps.
 - **Troubleshooting**: Include a "Common Errors" or "FAQs" section at the end.
 

@@ -280,7 +280,9 @@ def analyze_readability(text: str) -> dict:
         result["recommendations"].append("Break long paragraphs into smaller ones")
 
     if result["word_count"] < 300:
-        result["issues"].append(f"⚠️ Thin content ({result['word_count']} words) — may rank poorly")
+        result["issues"].append(
+            f"ℹ️ Short page ({result['word_count']} words). Review completeness against its purpose; length alone is not an SEO defect."
+        )
 
     # Build concrete rewrite candidates for long sentences
     long_sentences = []
@@ -315,7 +317,7 @@ def analyze_readability(text: str) -> dict:
                     "malware analysis using the tracks below.\""
                 ),
                 "current_word_count": "template",
-                "target_word_count": "40-60 total (split into 2-3 sentences)",
+                "target_word_count": "No fixed target; keep the hero concise and complete",
             },
             {
                 "current": "Section descriptions mix too many topics in one long paragraph.",
@@ -325,7 +327,7 @@ def analyze_readability(text: str) -> dict:
                     "\"View Red-Team Cheat Sheets\"."
                 ),
                 "current_word_count": "template",
-                "target_word_count": "12-20 words per blurb",
+                "target_word_count": "No fixed target; one clear idea per blurb",
             },
         ])
 

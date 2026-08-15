@@ -463,11 +463,11 @@ def detect_seo_issues(content: dict, structured_data: list, readability: dict) -
     elif len(h1s) > 1:
         issues.append({"severity": "Warning", "area": "H1", "finding": f"Multiple H1 tags found ({len(h1s)}).", "fix": "Use exactly one H1 per page."})
 
-    # Word count (blog post minimum = 1,500)
+    # Length is descriptive evidence, not a ranking requirement.
     if word_count < 300:
-        issues.append({"severity": "Critical", "area": "Content", "finding": f"Very thin content ({word_count} words).", "fix": "Expand content to at least 1,500 words for blog posts."})
+        issues.append({"severity": "Info", "area": "Content", "finding": f"Short article ({word_count} words).", "fix": "Review whether the article fully answers its stated question; add only specifically missing information."})
     elif word_count < 1000:
-        issues.append({"severity": "Warning", "area": "Content", "finding": f"Content may be thin for a blog post ({word_count} words).", "fix": "Aim for 1,500+ words of substantive, unique content."})
+        issues.append({"severity": "Info", "area": "Content", "finding": f"Article length observed: {word_count} words.", "fix": "No length-based action. Evaluate originality, accuracy, and topic completeness."})
 
     # Author attribution (E-E-A-T)
     if not content.get("author"):

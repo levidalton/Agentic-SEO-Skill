@@ -22,9 +22,9 @@ Apply `resources/references/llm-audit-rubric.md` for evidence standards, confide
 - External links: to authoritative sources, reasonable count
 
 ### Content Quality
-- Word count vs page type minimums (see quality-gates.md)
+- Topic completeness relative to the page's audience and search intent; record word count only as descriptive evidence
 - Readability: Flesch Reading Ease score, grade level
-- Keyword density: natural (1-3%), semantic variations present
+- Keyword use: natural and aligned with intent; do not prescribe a density target
 - E-E-A-T signals: author bio, credentials, first-hand experience markers
 - Content freshness: publication date, last updated date
 

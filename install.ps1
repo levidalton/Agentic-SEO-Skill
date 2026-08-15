@@ -2,11 +2,11 @@
 
 $ErrorActionPreference = 'Stop'
 
-$REPO_URL        = if ($env:REPO_URL) { $env:REPO_URL } else { 'https://github.com/Bhanunamikaze/Agentic-SEO-Skill.git' }
-$GITHUB_REPO     = if ($env:GITHUB_REPO) { $env:GITHUB_REPO } else { 'Bhanunamikaze/Agentic-SEO-Skill' }
+$REPO_URL        = if ($env:REPO_URL) { $env:REPO_URL } else { 'https://github.com/levidalton/Agentic-SEO-Skill.git' }
+$GITHUB_REPO     = if ($env:GITHUB_REPO) { $env:GITHUB_REPO } else { 'levidalton/Agentic-SEO-Skill' }
 $GITHUB_REF      = if ($env:GITHUB_REF)  { $env:GITHUB_REF }  else { 'main' }
-$SKILL_NAME      = 'seo'
-$TARGET          = 'claude'
+$SKILL_NAME      = 'seo-audit'
+$TARGET          = 'codex'
 $TARGET_EXPLICIT = $false
 $PROJECT_DIR     = (Get-Location).Path
 $PROJECT_DIR_EXPLICIT = $false
@@ -20,7 +20,7 @@ $TEMP_DIR        = $null
 
 # docs/ and tests/ are intentionally excluded — docs/ only holds README
 # screenshots, and tests/ is for repository CI rather than installed skills.
-$REQUIRED_PATHS  = @('SKILL.md', 'scripts', 'resources')
+$REQUIRED_PATHS  = @('LICENSE', 'NOTICE.md', 'SKILL.md', 'agents', 'scripts', 'resources')
 
 # Shared invocation block written into every IDE-native format file.
 $SKILL_INVOCATION_TEXT = @'
@@ -32,8 +32,9 @@ You have access to the Agentic SEO analysis skill (16 sub-skills, 10 specialist 
 
 Activate whenever the user asks to:
 - Perform an SEO analysis / audit on a URL, blog post, or GitHub repository
+- Write or revise website copy when search visibility, keywords, local SEO, or organic discovery is an explicit goal
 - Review technical SEO (crawlability, indexability, Core Web Vitals, security headers)
-- Evaluate content quality, E-E-A-T, or AI-content signals
+- Evaluate content quality, E-E-A-T, writing-pattern signals, or content risks without claiming authorship
 - Validate / generate Schema.org JSON-LD
 - Analyse sitemaps, hreflang, image SEO, internal/external link profiles
 - Optimise for Generative Engine Optimisation (GEO) or Answer Engine Optimisation (AEO)
@@ -89,11 +90,11 @@ Usage:
 
 Options:
   --target <target>
-      Install target (default: claude). Valid targets:
-        claude       ->  ~\.claude\skills\seo
-        codex        ->  ~\.codex\skills\seo
-        antigravity  ->  <project>\.agent\skills\seo
-        cowork       ->  <project>\seo.plugin  (Cowork plugin file; import via Cowork UI)
+      Install target (default: codex). Valid targets:
+        claude       ->  ~\.claude\skills\seo-audit
+        codex        ->  ~\.codex\skills\seo-audit
+        antigravity  ->  <project>\.agent\skills\seo-audit
+        cowork       ->  <project>\seo-audit.plugin  (Cowork plugin file; import via Cowork UI)
         cursor       ->  <project>\.cursor\rules\seo.mdc
         windsurf     ->  <project>\.windsurf\rules\seo.md
         continue     ->  <project>\.continue\prompts\seo.prompt
@@ -104,12 +105,11 @@ Options:
         all          ->  global + project (every target)
 
   --project-dir <path>         Project directory for project-local installs (default: cwd)
-  --skill-name <name>          Installed folder name for skills-dir targets (default: seo)
+  --skill-name <name>          Installed folder name for skills-dir targets (default: seo-audit)
   --repo-url <url>             Git URL for remote source installs
   --source <auto|local|remote> Source mode (default: auto)
   --repo-path <path>           Use a specific local checkout as the install source
   --online                     Fetch latest release zip from GitHub instead of cloning.
-                               When no --target is supplied, defaults to --target all.
   --ref <branch-or-tag>        Branch / tag to fetch in --online mode (default: main)
   --install-deps               Install Python dependencies (requests, beautifulsoup4)
   --install-playwright         Also install Playwright + Chromium
@@ -562,7 +562,7 @@ while ($idx -lt $args.Count) {
         }
         '--install-deps'       { $INSTALL_DEPS = $true; $idx += 1; continue }
         '--install-playwright' { $INSTALL_PLAYWRIGHT = $true; $INSTALL_DEPS = $true; $idx += 1; continue }
-        '--online'             { $ONLINE_MODE = $true; $FORCE = $true; $idx += 1; continue }
+        '--online'             { $ONLINE_MODE = $true; $idx += 1; continue }
         '--force'              { $FORCE = $true; $idx += 1; continue }
         '-h'                   { Show-Usage; exit 0 }
         '--help'               { Show-Usage; exit 0 }
@@ -580,8 +580,9 @@ if ($TARGET -notin $VALID_TARGETS) {
 if ($SOURCE_MODE -notin @('auto','local','remote')) {
     throw "Error: invalid --source: $SOURCE_MODE"
 }
-if ($ONLINE_MODE -and (-not $TARGET_EXPLICIT)) { $TARGET = 'all' }
-
+if ($SKILL_NAME -notmatch '^[A-Za-z0-9][A-Za-z0-9._-]*$') {
+    throw 'Error: --skill-name must be one safe path component matching [A-Za-z0-9][A-Za-z0-9._-]*'
+}
 $PY = Resolve-Python
 
 $SCRIPT_DIR  = if ($PSScriptRoot) { $PSScriptRoot } else { (Get-Location).Path }

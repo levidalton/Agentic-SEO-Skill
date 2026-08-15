@@ -1,8 +1,8 @@
-# SEO Skill (Antigravity / Claude / Codex / Cursor)
+# Evidence-First SEO Skill for Agent Workflows
 
 An LLM-first SEO analysis skill for agent IDEs and AI coding assistants, with 16 specialized sub-skills, 10 specialist agents, and 89 scripts used as evidence collectors and workflow automation.
 
-For detailed installation guidance, example prompts, report generation, troubleshooting, and the full script inventory, see the **[Agentic SEO Skill Wiki](https://github.com/Bhanunamikaze/Agentic-SEO-Skill/wiki)**.
+This is Levi Dalton's maintained fork of [Bhanunamikaze/Agentic-SEO-Skill](https://github.com/Bhanunamikaze/Agentic-SEO-Skill). It preserves the upstream MIT license and adds evidence policy, safer installers, cross-agent distribution, and SEO-specific automatic activation. The upstream wiki remains useful for the inherited tool inventory, but fork behavior is defined by this repository.
 
 ## IDE Compatibility
 
@@ -10,15 +10,20 @@ The installer ships native formats for each tool — not just a generic copy:
 
 | Tool | Install location | Native format |
 |---|---|---|
-| Claude Code | `~/.claude/skills/seo` | Skill directory |
-| Codex CLI | `~/.codex/skills/seo` | Skill directory |
-| Antigravity IDE | `<project>/.agent/skills/seo` | Skill directory |
-| Claude Cowork | `<project>/.claude/skills/seo` | Project-scoped skill (commit to git) |
-| Cursor | `<project>/.cursor/rules/seo.mdc` + `.cursor/skills/seo/` | MDC rule |
-| Windsurf | `<project>/.windsurf/rules/seo.md` + `.windsurf/skills/seo/` | Windsurf rule |
-| Continue.dev | `<project>/.continue/prompts/seo.prompt` + `.continue/skills/seo/` | Slash command |
-| GitHub Copilot | `<project>/.github/copilot-instructions.md` + `.github/skills/seo/` | Repo instructions |
-| Cline | `<project>/.clinerules` + `.cline/skills/seo/` | Project rules |
+| Codex | `~/.codex/skills/seo-audit` | Skill directory + OpenAI metadata |
+| Claude Code | `~/.claude/skills/seo-audit` | Skill directory |
+| Gemini | `~/.gemini/skills/seo-audit` | Shared skill link |
+| Grok | `~/.grok/skills/seo-audit` | Shared skill link |
+| Hermes | `~/.hermes/skills/seo-audit` | Shared skill link |
+| Antigravity IDE | `<project>/.agent/skills/seo-audit` | Skill directory |
+| Claude Cowork | `<project>/.claude/skills/seo-audit` | Project-scoped skill (commit to git) |
+| Cursor | `<project>/.cursor/rules/seo.mdc` + `.cursor/skills/seo-audit/` | MDC rule + skill directory |
+| Windsurf | `<project>/.windsurf/rules/seo.md` + `.windsurf/skills/seo-audit/` | Windsurf rule + skill directory |
+| Continue.dev | `<project>/.continue/prompts/seo.prompt` + `.continue/skills/seo-audit/` | Slash command + skill directory |
+| GitHub Copilot | `<project>/.github/copilot-instructions.md` + `.github/skills/seo-audit/` | Repo instructions + skill directory |
+| Cline | `<project>/.clinerules` + `.cline/skills/seo-audit/` | Project rules + skill directory |
+
+On macOS/Linux, `--target shared` keeps one canonical copy at `~/.agents/skills/seo-audit` and links it into Codex, Claude, Gemini, Grok, and Hermes. Project adapters cover the other listed tools. PowerShell supports Codex, Claude, Antigravity, and the project adapters; the five-agent shared-link target is currently Bash-only.
 
 ## 📦 Current Inventory
 
@@ -113,7 +118,7 @@ The rubric standardizes:
 ## 🤖 Specialist Agents
 
 - **Technical SEO** — crawlability, indexability, security, mobile, JS rendering
-- **Content Quality** — E-E-A-T scoring, AI content detection
+- **Content Quality** — E-E-A-T evidence and writing-pattern/content-risk review
 - **Performance** — Core Web Vitals (LCP, INP, CLS) analysis
 - **Schema Markup** — JSON-LD detection, validation, generation
 - **Sitemap** — XML sitemap validation, quality gates
@@ -128,7 +133,7 @@ The rubric standardizes:
 - Core Web Vitals thresholds (INP replaced FID)
 - E-E-A-T framework (Sept 2025 QRG + Dec 2025 core update)
 - Schema.org types — active, restricted, deprecated
-- Content quality gates & word count minimums
+- Content quality review based on intent, completeness, originality, and evidence
 - Google SEO quick reference
 - LLM audit rubric for consistent outputs
 
@@ -142,31 +147,33 @@ Pre-built strategy templates for: **SaaS**, **E-commerce**, **Local Business**, 
 
 ## 🔧 Installation
 
-All `--online` commands below download the latest release package from GitHub automatically. With no `--target`, `--online` installs to every supported IDE.
+All `--online` commands below download the latest release package from this fork. Online mode never expands the requested target or implies `--force`.
 
 ### Quick install (no cloning required)
 
 **Linux / macOS:**
 ```bash
-# Default: installs to every target at once
-curl -fsSL https://raw.githubusercontent.com/Bhanunamikaze/Agentic-SEO-Skill/main/install.sh | bash -s -- --online
+# Download and inspect before running; default target is Codex
+curl -fsSLO https://raw.githubusercontent.com/levidalton/Agentic-SEO-Skill/main/install.sh
+less install.sh
+bash install.sh --online
 
 # Claude Code only
-curl -fsSL https://raw.githubusercontent.com/Bhanunamikaze/Agentic-SEO-Skill/main/install.sh | bash -s -- --online --target claude
+bash install.sh --online --target claude
 
-# User-wide (Claude + Codex)
-curl -fsSL https://raw.githubusercontent.com/Bhanunamikaze/Agentic-SEO-Skill/main/install.sh | bash -s -- --online --target global
+# macOS/Linux: one canonical skill linked into Codex, Claude, Gemini, Grok, and Hermes
+bash install.sh --online --target shared
 
-# Every target, scoped to a project
-curl -fsSL https://raw.githubusercontent.com/Bhanunamikaze/Agentic-SEO-Skill/main/install.sh | bash -s -- --online --target all --project-dir /path/to/your/project
+# Every project-local IDE target; always explicit
+bash install.sh --online --target project --project-dir /path/to/your/project
 ```
 
 **Windows (PowerShell 7+):**
 ```powershell
 # Download installer, then run with --online
-irm https://raw.githubusercontent.com/Bhanunamikaze/Agentic-SEO-Skill/main/install.ps1 -OutFile install.ps1
+irm https://raw.githubusercontent.com/levidalton/Agentic-SEO-Skill/main/install.ps1 -OutFile install.ps1
 
-# Default: installs to every target at once
+# Default: installs to Codex
 powershell -ExecutionPolicy Bypass -File .\install.ps1 --online
 
 # Claude Code only
@@ -179,7 +186,7 @@ powershell -ExecutionPolicy Bypass -File .\install.ps1 --online --target all --p
 ### From source
 
 ```bash
-git clone https://github.com/Bhanunamikaze/Agentic-SEO-Skill.git
+git clone https://github.com/levidalton/Agentic-SEO-Skill.git
 cd Agentic-SEO-Skill
 
 # Claude Code (most common)
@@ -212,6 +219,9 @@ bash install.sh --target antigravity --project-dir /path/to/your/project
 # User-wide (Claude + Codex)
 bash install.sh --target global
 
+# macOS/Linux: one canonical install for Codex, Claude, Gemini, Grok, and Hermes
+bash install.sh --target shared
+
 # All project-local IDEs at once
 bash install.sh --target project --project-dir /path/to/your/project
 
@@ -231,7 +241,7 @@ powershell -ExecutionPolicy Bypass -File .\install.ps1 --target all --project-di
 
 **Safer remote install (download, inspect, run):**
 ```bash
-curl -fsSLO https://raw.githubusercontent.com/Bhanunamikaze/Agentic-SEO-Skill/main/install.sh
+curl -fsSLO https://raw.githubusercontent.com/levidalton/Agentic-SEO-Skill/main/install.sh
 less install.sh                  # review before running
 bash install.sh --online
 ```
@@ -240,17 +250,17 @@ bash install.sh --online
 
 | Flag | Default | Purpose |
 |---|---|---|
-| `--target <name>` | `claude` | Pick a target (see IDE Compatibility table). With `--online` and no flag, defaults to `all`. |
+| `--target <name>` | `codex` | Pick one target. On macOS/Linux, use `shared` for the local agent fleet; remote mode never expands scope automatically. |
 | `--project-dir <path>` | cwd | Where to install project-local targets. |
-| `--skill-name <name>` | `seo` | Override the installed folder name for skills-dir targets. |
+| `--skill-name <name>` | `seo-audit` | Override the installed folder name for skills-dir targets. |
 | `--online` | off | Fetch the latest release/branch archive from GitHub instead of using the local tree. |
 | `--ref <branch-or-tag>` | `main` | Branch or tag to use in `--online` mode. |
-| `--repo-url <url>` | upstream | Override the source repo for remote clone. |
+| `--repo-url <url>` | this fork | Override the source repo for remote clone. |
 | `--source <auto\|local\|remote>` | `auto` | Force the source resolution mode. |
 | `--repo-path <path>` | — | Use a specific local checkout as the install source. |
 | `--install-deps` | off | Also `pip install --user requests beautifulsoup4`. |
 | `--install-playwright` | off | Also install Playwright + Chromium (for visual analysis). |
-| `--force` | off | Overwrite an existing installed skill. (`--online` implies `--force`.) |
+| `--force` | off | Explicitly overwrite an existing installed skill. Remote mode never implies this flag. |
 | `-h`, `--help` | — | Show the full usage block. |
 
 ### Python dependencies (manual)
@@ -265,13 +275,16 @@ pip install playwright && playwright install chromium
 
 ### Verify Triggering
 
-The skill will auto-trigger when you mention SEO-related keywords in your IDE. Try:
+The root skill description tells skill-aware agents when to select this workflow, `agents/openai.yaml` allows implicit invocation in Codex, and project installers generate each IDE's native rule or instruction file. It should activate for SEO audits, technical SEO, schema, search-focused content optimization, keyword research, metadata, internal linking, local SEO, AEO/GEO, repository discoverability, and copywriting with an explicit organic-search goal. Ordinary copy editing should not trigger the full workflow. Agent routers remain probabilistic, so explicit `$seo-audit` invocation is the deterministic fallback.
+
+Try:
 
 - *"Run an SEO audit on example.com"*
 - *"Check the schema markup on my homepage"*
 - *"Analyze Core Web Vitals for my site"*
 - *"Create an SEO plan for my SaaS product"*
 - *"Run GitHub SEO analysis for owner/repo"*
+- *"Rewrite this service page for local organic search without inventing claims"*
 
 ---
 
@@ -306,7 +319,7 @@ Here's how specific phrases map to the skill's capabilities:
 | "Entity SEO" / "Knowledge Graph" | 🏛️ Entity only | **Content** + **Schema** | `entity_checker.py`, `parse_html.py` |
 | "Check IndexNow" | 📡 IndexNow only | **Technical** | `indexnow_checker.py` |
 | "Find content gaps" / "competitor analysis" | 📊 Gap analysis | None (LLM reasoning) | `competitor_gap.py` |
-| "Check for duplicates" / "thin content" | 📋 Dupe check | **Content** | `duplicate_content.py` |
+| "Check duplicate or low-value pages" | 📋 Dupe/content-depth check | **Content** | `duplicate_content.py` |
 | "GSC data" / "Search Console" | 📈 GSC only | None | `gsc_checker.py` |
 | "GitHub SEO" / "optimize this repo" | 🐙 Repository | **GitHub Analyst** + **Benchmark** + **Data** + **Verifier** | `github_repo_audit.py`, `github_readme_lint.py`, `github_community_health.py`, `github_search_benchmark.py`, `github_competitor_research.py`, `github_traffic_archiver.py`, `github_seo_report.py`, `finding_verifier.py` (outputs `GITHUB-SEO-REPORT.md` + `GITHUB-ACTION-PLAN.md`) |
 

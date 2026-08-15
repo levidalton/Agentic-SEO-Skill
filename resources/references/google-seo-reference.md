@@ -112,7 +112,7 @@ Measured at the 75th percentile of real user data (field data).
 ### Manual Actions
 Google Search Console notifications for violations. Common causes:
 - **Unnatural links** (buying/selling links): Disavow bad links, request reconsideration
-- **Thin content**: Add substantial unique value to affected pages
+- **Low-value content**: Identify the unmet user need, duplication, or missing original value; do not diagnose from length alone
 - **Cloaking/sneaky redirects**: Remove deceptive serving, request reconsideration
 - **User-generated spam**: Moderate comments/forums, add nofollow to user links
 - **Structured data issues**: Fix misleading or spam markup

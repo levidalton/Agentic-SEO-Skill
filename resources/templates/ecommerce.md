@@ -92,7 +92,7 @@
 
 ## Content Requirements
 
-### Product Pages (min 400 words)
+### Product pages
 - Unique product descriptions (not manufacturer copy)
 - Feature highlights
 - Use cases / who it's for
@@ -101,7 +101,7 @@
 - Care instructions
 - Customer reviews
 
-### Category Pages (min 400 words)
+### Category pages
 - Category introduction
 - Buying guide excerpt
 - Featured products

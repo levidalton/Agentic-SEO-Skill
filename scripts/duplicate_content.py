@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Duplicate & Thin Content Detector
+Duplicate Content & Content-Depth Review
 
 Detects near-duplicate pages and thin content across a site using
 MinHash / Jaccard similarity and word-count thresholds.
@@ -29,16 +29,6 @@ try:
     from lib.safe_http import safe_get
 except ImportError:
     from scripts.lib.safe_http import safe_get
-
-# Quality gates from resources/references/quality-gates.md
-THIN_CONTENT_THRESHOLDS = {
-    "blog_post": 1500,
-    "landing_page": 800,
-    "product_page": 300,
-    "location_page": 350,
-    "default": 300,
-}
-
 
 # ---------------------------------------------------------------------------
 # Fetch & extract
@@ -296,33 +286,31 @@ def detect_duplicates(pages: dict, similarity_threshold: float = 0.85) -> dict:
                     ),
                 })
 
-    # Step 3: Thin content
-    thin_pages = []
+    # Step 3: Short-page review. Length alone is not an SEO defect.
+    short_pages = []
     for url, data in pages.items():
         if page_is_noindex(data):
             continue
         wc = data["word_count"]
-        threshold = THIN_CONTENT_THRESHOLDS["default"]
-        if wc < threshold:
-            thin_pages.append({
-                "type": "thin_content",
-                "severity": "Warning" if wc >= 100 else "Critical",
+        if wc < 300:
+            short_pages.append({
+                "type": "content_depth_review",
+                "severity": "Info",
                 "url": url,
                 "word_count": wc,
-                "threshold": threshold,
-                "finding": f"Only {wc} words (minimum: {threshold}).",
-                "fix": f"Expand content to at least {threshold} words of substantive, unique content, or noindex if low-value.",
+                "finding": f"Short page observed ({wc} words); length alone is not an SEO defect.",
+                "fix": "Review whether the page fulfills its purpose with original, accurate information. Add only identified missing content.",
             })
 
     return {
         "pages_analyzed": len(pages),
         "exact_duplicates": exact_dupes,
         "near_duplicates": near_dupes,
-        "thin_content": thin_pages,
+        "content_depth_review": short_pages,
         "summary": {
             "exact_duplicate_groups": len(exact_dupes),
             "near_duplicate_pairs": len(near_dupes),
-            "thin_pages": len(thin_pages),
+            "short_pages_for_review": len(short_pages),
             "avg_word_count": round(
                 sum(p["word_count"] for p in pages.values()) / max(1, len(pages))
             ),
@@ -336,7 +324,7 @@ def detect_duplicates(pages: dict, similarity_threshold: float = 0.85) -> dict:
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Duplicate & Thin Content Detector (MinHash / Jaccard similarity)"
+        description="Duplicate Content Detector with informational short-page review (MinHash / Jaccard similarity)"
     )
     parser.add_argument("url", help="Start URL to crawl")
     parser.add_argument("--depth", type=int, default=2, help="Crawl depth (default: 2)")
@@ -356,7 +344,7 @@ def main():
         print(json.dumps(report, indent=2))
         return
 
-    print(f"\nDuplicate & Thin Content Report")
+    print(f"\nDuplicate Content Report")
     print("=" * 60)
     print(f"Pages Analyzed    : {report['pages_analyzed']}")
     print(f"Avg Word Count    : {report['summary']['avg_word_count']}")
@@ -377,14 +365,13 @@ def main():
             print(f"     B: {pair['url_b']} ({pair['word_count_b']} words)")
             print(f"     Fix: {pair['fix']}")
 
-    if report["thin_content"]:
-        print(f"\nThin Content ({report['summary']['thin_pages']} pages):")
-        for page in sorted(report["thin_content"], key=lambda x: x["word_count"]):
-            icon = "🔴" if page["severity"] == "Critical" else "⚠️"
-            print(f"  {icon} {page['url']} — {page['word_count']} words (min: {page['threshold']})")
+    if report["content_depth_review"]:
+        print(f"\nShort Pages for Content Review ({report['summary']['short_pages_for_review']} pages):")
+        for page in sorted(report["content_depth_review"], key=lambda x: x["word_count"]):
+            print(f"  ℹ️ {page['url']} — {page['word_count']} words; review purpose and completeness")
 
-    if not report["exact_duplicates"] and not report["near_duplicates"] and not report["thin_content"]:
-        print("\n✅ No duplicate or thin content issues detected.")
+    if not report["exact_duplicates"] and not report["near_duplicates"] and not report["content_depth_review"]:
+        print("\n✅ No duplicate-content issues or short-page review candidates detected.")
 
 
 if __name__ == "__main__":

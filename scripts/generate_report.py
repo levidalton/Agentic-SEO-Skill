@@ -41,11 +41,10 @@ DEFAULT_SCORING_CONFIG = {
         "broken_links": {"weight": 10, "label": "Broken Links"},
         "internal_links": {"weight": 8, "label": "Internal Links"},
         "redirects": {"weight": 3, "label": "Redirects"},
-        "llms_txt": {"weight": 5, "label": "AI Search"},
-        "pagespeed": {"weight": 13, "label": "Performance and Core Web Vitals"},
-        "onpage": {"weight": 10, "label": "On-Page SEO"},
+        "pagespeed": {"weight": 15, "label": "Performance and Core Web Vitals"},
+        "onpage": {"weight": 12, "label": "On-Page SEO"},
         "readability": {"weight": 8, "label": "Readability"},
-        "entity": {"weight": 5, "label": "Entity SEO"},
+        "entity": {"weight": 6, "label": "Entity SEO"},
         "link_profile": {"weight": 7, "label": "Link Profile"},
         "hreflang": {"weight": 5, "label": "Hreflang"},
         "duplicate_content": {"weight": 5, "label": "Content Uniqueness"},
@@ -194,7 +193,6 @@ def _platform_hint(primary: str, area: str) -> str:
         "metadata": "In Blogger, update Theme -> Edit HTML and add tags in the <head> section (title template, meta description, OG/Twitter tags).",
         "heading": "In Blogger templates, keep exactly one content H1 per page (post title on posts, site headline on homepage).",
         "headers": "Blogger cannot set most response headers directly. Add Cloudflare in front and configure Response Header Transform Rules.",
-        "llms": "Blogger cannot natively serve arbitrary root files. Serve /llms.txt via Cloudflare Workers/Pages or reverse-proxy route.",
         "links": "Fix broken internal links in post content and navigation widgets; update outdated post URLs and labels.",
         "performance": "Optimize Blogger theme widgets/scripts, compress hero/media assets, and defer non-critical third-party scripts.",
     }
@@ -202,7 +200,6 @@ def _platform_hint(primary: str, area: str) -> str:
         "metadata": "Use your SEO plugin (Yoast/RankMath/AIOSEO) or theme templates to set title/meta and OG/Twitter tags.",
         "heading": "Ensure one H1 in theme templates and avoid duplicate H1 in builders/widgets.",
         "headers": "Set headers via server config (Nginx/Apache) or CDN edge rules.",
-        "llms": "Create /llms.txt at web root or route it through your web server.",
         "links": "Fix links in menus, content blocks, and internal link plugin data.",
         "performance": "Use caching, image optimization, script deferral, and CWV-focused plugin settings.",
     }
@@ -210,7 +207,6 @@ def _platform_hint(primary: str, area: str) -> str:
         "metadata": "Use the Next.js Metadata API (`app/`) or `next/head` (`pages/`) for title/meta/OG/Twitter tags.",
         "heading": "Set a single semantic H1 in each route component.",
         "headers": "Set security headers in `next.config.js` `headers()` or at your edge/CDN.",
-        "llms": "Serve `/llms.txt` from `/public/llms.txt`.",
         "links": "Fix links in route components and content source files; validate with link checks in CI.",
         "performance": "Use `next/image`, dynamic imports, script strategy controls, and reduce main-thread JS.",
     }
@@ -218,7 +214,6 @@ def _platform_hint(primary: str, area: str) -> str:
         "metadata": "Update page templates to set complete title/meta/OG/Twitter tags.",
         "heading": "Ensure each page has exactly one descriptive H1 aligned to intent.",
         "headers": "Set missing security headers at web server or CDN layer.",
-        "llms": "Add `/llms.txt` at site root with concise site description and key URLs.",
         "links": "Repair or remove broken internal links and refresh outdated navigation targets.",
         "performance": "Compress critical assets, reduce render-blocking scripts, and optimize CWV bottlenecks.",
     }
@@ -296,14 +291,6 @@ def build_environment_fixes(data: dict) -> list:
             _platform_hint(platform, "headers"),
         )
 
-    if not llm.get("exists"):
-        add(
-            "warning",
-            "No llms.txt found",
-            "AI crawlers and assistants have no curated machine-readable guidance for key pages.",
-            _platform_hint(platform, "llms"),
-        )
-
     broken_count = bl.get("summary", {}).get("broken", 0)
     if broken_count > 0:
         add(
@@ -336,7 +323,7 @@ def build_environment_fixes(data: dict) -> list:
             "warning",
             "Content readability is difficult",
             "Long, complex text can reduce engagement and comprehension.",
-            "Rewrite key sections with shorter sentences (15-20 words), shorter paragraphs (2-4 sentences), and clearer subheadings.",
+            "Rewrite key sections with clearer sentences, natural paragraph breaks, and descriptive subheadings appropriate to the audience.",
         )
 
     if not fixes:
@@ -491,13 +478,6 @@ def calculate_overall_score(data: dict, scoring_config: dict | None = None) -> d
     red_issues = len(red.get("issues", []))
     scores["redirects"] = max(0, 100 - red_issues * 25)
 
-    # llms.txt score
-    llm = data["sections"].get("llms_txt", {})
-    if llm.get("exists"):
-        scores["llms_txt"] = llm.get("quality", {}).get("score", 0)
-    else:
-        scores["llms_txt"] = 0
-
     # PageSpeed score
     psi = data["sections"].get("pagespeed", {})
     scores["pagespeed"] = psi.get("performance_score", 0)
@@ -572,8 +552,7 @@ def calculate_overall_score(data: dict, scoring_config: dict | None = None) -> d
     dc = data["sections"].get("duplicate_content", {})
     if dc and not dc.get("error"):
         dupes = len(dc.get("near_duplicates", []))
-        thin = len(dc.get("thin_pages", []))
-        dc_score = 100 - dupes * 20 - thin * 10
+        dc_score = 100 - dupes * 20
         scores["duplicate_content"] = max(0, min(100, dc_score))
     else:
         scores["duplicate_content"] = 0
@@ -991,7 +970,6 @@ def generate_html(data: dict, scores: dict) -> str:
         "broken_links": ("🔗", "Broken Links"),
         "internal_links": ("🕸️", "Internal Links"),
         "redirects": ("↪️", "Redirects"),
-        "llms_txt": ("🧠", "AI Search (llms.txt)"),
         "pagespeed": ("⚡", "Performance (CWV)"),
         "onpage": ("📝", "On-Page SEO"),
         "readability": ("📖", "Readability"),
@@ -1487,15 +1465,16 @@ tr:hover td {{ background: rgba(99,102,241,0.03); }}
     <!-- llms.txt -->
     <div class="section" id="section-llms_txt">
         <div class="section-header" onclick="toggleSection('llms_txt')">
-            <h2>🧠 AI Search Readiness (llms.txt) <span class="badge {"pass" if llm.get("exists") else "critical"}">{"Found" if llm.get("exists") else "Not Found"}</span></h2>
+            <h2>🧠 Optional llms.txt Metadata <span class="badge info">{"Found" if llm.get("exists") else "Not Found · No SEO penalty"}</span></h2>
             <span class="chevron" id="chevron-llms_txt">▼</span>
         </div>
         <div class="section-body" id="body-llms_txt">
             <div class="summary-row">
-                <div class="summary-item"><div class="val">{"✅" if llm.get("exists") else "❌"}</div><div class="lbl">llms.txt</div></div>
-                <div class="summary-item"><div class="val">{"✅" if llm.get("full_exists") else "❌"}</div><div class="lbl">llms-full.txt</div></div>
-                <div class="summary-item"><div class="val">{llm.get("quality", {}).get("score", 0)}</div><div class="lbl">Quality Score</div></div>
+                <div class="summary-item"><div class="val">{"✅" if llm.get("exists") else "—"}</div><div class="lbl">llms.txt</div></div>
+                <div class="summary-item"><div class="val">{"✅" if llm.get("full_exists") else "—"}</div><div class="lbl">llms-full.txt</div></div>
+                <div class="summary-item"><div class="val">{llm.get("quality", {}).get("score", "N/A") if llm.get("exists") else "N/A"}</div><div class="lbl">Optional Format Check</div></div>
             </div>
+            <p style="color:var(--text-muted)">Google Search does not use llms.txt for ranking or generative-search visibility. Its absence is informational only.</p>
             {"".join(f'<div class="issue-item warning"><span class="issue-badge">TIP</span> {s}</div>' for s in llm.get("quality", {}).get("suggestions", []))}
         </div>
     </div>
@@ -1640,14 +1619,14 @@ tr:hover td {{ background: rgba(99,102,241,0.03); }}
     <!-- Duplicate Content -->
     <div class="section" id="section-duplicate_content">
         <div class="section-header" onclick="toggleSection('duplicate_content')">
-            <h2>📋 Content Uniqueness <span class="badge {"pass" if len(dc.get('near_duplicates', [])) == 0 else "warning"}">{len(dc.get('near_duplicates', []))} dupes / {len(dc.get('thin_pages', []))} thin</span></h2>
+            <h2>📋 Content Uniqueness <span class="badge {"pass" if len(dc.get('near_duplicates', [])) == 0 else "warning"}">{len(dc.get('near_duplicates', []))} duplicate pairs</span></h2>
             <span class="chevron" id="chevron-duplicate_content">▼</span>
         </div>
         <div class="section-body" id="body-duplicate_content">
             <div class="summary-row">
                 <div class="summary-item"><div class="val">{dc.get('pages_analyzed', '?')}</div><div class="lbl">Pages Analyzed</div></div>
                 <div class="summary-item"><div class="val">{len(dc.get('near_duplicates', []))}</div><div class="lbl">Near Duplicates</div></div>
-                <div class="summary-item"><div class="val">{len(dc.get('thin_pages', []))}</div><div class="lbl">Thin Pages</div></div>
+                <div class="summary-item"><div class="val">{len(dc.get('content_depth_review', []))}</div><div class="lbl">Short Pages to Review</div></div>
             </div>
             {render_recommendations(dc)}
         </div>

@@ -29,7 +29,12 @@ def check_collection_page(source: str, timeout: int = 15) -> dict:
     url = final_url or source
     word_count = parsed.get("word_count", 0)
     if word_count < 150:
-        issues.append(issue("warning", "Collection page has thin visible copy", url, str(word_count)))
+        issues.append(issue(
+            "info",
+            "Collection page has little visible descriptive copy; verify that navigation and product context meet user needs",
+            url,
+            str(word_count),
+        ))
     if not parsed.get("headings", {}).get("h1"):
         issues.append(issue("error", "Collection page is missing H1", url))
     if not parsed.get("meta_description"):

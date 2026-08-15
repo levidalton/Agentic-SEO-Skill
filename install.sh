@@ -2,11 +2,11 @@
 
 set -euo pipefail
 
-REPO_URL="${REPO_URL:-https://github.com/Bhanunamikaze/Agentic-SEO-Skill.git}"
-GITHUB_REPO="${GITHUB_REPO:-Bhanunamikaze/Agentic-SEO-Skill}"
+REPO_URL="${REPO_URL:-https://github.com/levidalton/Agentic-SEO-Skill.git}"
+GITHUB_REPO="${GITHUB_REPO:-levidalton/Agentic-SEO-Skill}"
 GITHUB_REF="${GITHUB_REF:-main}"
-SKILL_NAME="seo"
-TARGET="claude"
+SKILL_NAME="seo-audit"
+TARGET="codex"
 TARGET_EXPLICIT=0
 PROJECT_DIR="$(pwd)"
 PROJECT_DIR_EXPLICIT=0
@@ -22,7 +22,10 @@ TEMP_DIR=""
 # docs/ and tests/ are intentionally excluded — docs/ only holds README
 # screenshots, and tests/ is for repository CI rather than installed skills.
 REQUIRED_PATHS=(
+    "LICENSE"
+    "NOTICE.md"
     "SKILL.md"
+    "agents"
     "scripts"
     "resources"
 )
@@ -47,27 +50,28 @@ Usage:
 
 Options:
   --target <target>
-      Install target (default: claude). Valid targets:
-        claude       -> ~/.claude/skills/seo
-        codex        -> ~/.codex/skills/seo
-        antigravity  -> <project>/.agent/skills/seo
-        cowork       -> <project>/seo.plugin  (Cowork plugin file; import via Cowork UI)
+      Install target (default: codex). Valid targets:
+        claude       -> ~/.claude/skills/seo-audit
+        codex        -> ~/.codex/skills/seo-audit
+        antigravity  -> <project>/.agent/skills/seo-audit
+        cowork       -> <project>/seo-audit.plugin  (Cowork plugin file; import via Cowork UI)
         cursor       -> <project>/.cursor/rules/seo.mdc
         windsurf     -> <project>/.windsurf/rules/seo.md
         continue     -> <project>/.continue/prompts/seo.prompt
         copilot      -> <project>/.github/copilot-instructions.md
         cline        -> <project>/.clinerules
+        shared       -> canonical ~/.agents/skills/seo-audit linked into Codex,
+                        Claude, Gemini, Grok, and Hermes
         global       -> claude + codex (user-wide)
         project      -> antigravity + cowork + cursor + windsurf + continue + copilot + cline
         all          -> global + project (every target)
 
   --project-dir <path>         Project directory for project-local installs (default: cwd)
-  --skill-name <name>          Installed folder name for skills-dir targets (default: seo)
+  --skill-name <name>          Installed folder name for skills-dir targets (default: seo-audit)
   --repo-url <url>             Git URL for remote source installs
   --source <auto|local|remote> Source mode (default: auto)
   --repo-path <path>           Use a specific local checkout as the install source
   --online                     Fetch latest release archive from GitHub instead of cloning.
-                               When no --target is supplied, defaults to --target all.
   --ref <branch-or-tag>        Branch / tag to fetch in --online mode (default: main)
   --install-deps               Install Python dependencies (requests, beautifulsoup4)
   --install-playwright         Also install Playwright + Chromium
@@ -77,6 +81,7 @@ Options:
 Examples:
   bash install.sh --target claude
   bash install.sh --target global
+  bash install.sh --target shared
   bash install.sh --target project --project-dir /path/to/your/project
   bash install.sh --target cursor  --project-dir /path/to/your/project
   bash install.sh --target all     --project-dir /path/to/your/project
@@ -84,8 +89,9 @@ Examples:
   bash install.sh --online --ref develop
 
 Safer remote install:
-  curl -fsSLO https://raw.githubusercontent.com/Bhanunamikaze/Agentic-SEO-Skill/main/install.sh
-  bash install.sh --target claude
+  curl -fsSLO https://raw.githubusercontent.com/levidalton/Agentic-SEO-Skill/main/install.sh
+  less install.sh
+  bash install.sh --online --target codex
 EOF
 }
 
@@ -243,6 +249,50 @@ install_tool_global() {
     copy_skill "${SRC_DIR}" "${global_root}/skills/${SKILL_NAME}" "${tool}-global"
 }
 
+install_shared() {
+    local shared_root="${AGENTS_HOME:-${HOME}/.agents}"
+    local canonical="${shared_root}/skills/${SKILL_NAME}"
+    local destinations=(
+        "${CODEX_HOME:-${HOME}/.codex}/skills/${SKILL_NAME}"
+        "${CLAUDE_HOME:-${HOME}/.claude}/skills/${SKILL_NAME}"
+        "${GEMINI_HOME:-${HOME}/.gemini}/skills/${SKILL_NAME}"
+        "${GROK_HOME:-${HOME}/.grok}/skills/${SKILL_NAME}"
+        "${HERMES_HOME:-${HOME}/.hermes}/skills/${SKILL_NAME}"
+    )
+
+    local dest
+    for dest in "${destinations[@]}"; do
+        if [[ -L "${dest}" && "$(readlink "${dest}")" == "${canonical}" ]]; then
+            continue
+        fi
+        if [[ ( -e "${dest}" || -L "${dest}" ) && "${FORCE}" -ne 1 ]]; then
+            echo "  Error: agent target already exists: ${dest}" >&2
+            echo "  No files were changed. Use --force to replace all conflicting targets." >&2
+            return 1
+        fi
+    done
+
+    copy_skill "${SRC_DIR}" "${canonical}" "shared canonical"
+
+    for dest in "${destinations[@]}"; do
+        mkdir -p "$(dirname "${dest}")"
+        if [[ -L "${dest}" && "$(readlink "${dest}")" == "${canonical}" ]]; then
+            echo "  Already linked: ${dest}"
+            continue
+        fi
+        if [[ -e "${dest}" || -L "${dest}" ]]; then
+            if [[ "${FORCE}" -ne 1 ]]; then
+                echo "  Error: agent target already exists: ${dest}" >&2
+                echo "  Use --force to replace it." >&2
+                return 1
+            fi
+            rm -rf "${dest}"
+        fi
+        ln -s "${canonical}" "${dest}"
+        echo "  Linked: ${dest} -> ${canonical}"
+    done
+}
+
 # ── IDE-native format installers ─────────────────────────────────────────────
 
 # Shared invocation summary written into IDE-specific rule / prompt files.
@@ -256,8 +306,9 @@ You have access to the Agentic SEO analysis skill (16 sub-skills, 10 specialist 
 
 Activate whenever the user asks to:
 - Perform an SEO analysis / audit on a URL, blog post, or GitHub repository
+- Write or revise website copy when search visibility, keywords, local SEO, or organic discovery is an explicit goal
 - Review technical SEO (crawlability, indexability, Core Web Vitals, security headers)
-- Evaluate content quality, E-E-A-T, or AI-content signals
+- Evaluate content quality, E-E-A-T, writing-pattern signals, or content risks without claiming authorship
 - Validate / generate Schema.org JSON-LD
 - Analyse sitemaps, hreflang, image SEO, internal/external link profiles
 - Optimise for Generative Engine Optimisation (GEO) or Answer Engine Optimisation (AEO)
@@ -512,14 +563,21 @@ while [[ $# -gt 0 ]]; do
         --ref)                 GITHUB_REF="${2:-}"; shift 2 ;;
         --install-deps)        INSTALL_DEPS=1; shift ;;
         --install-playwright)  INSTALL_PLAYWRIGHT=1; INSTALL_DEPS=1; shift ;;
-        --online)              ONLINE_MODE=1; FORCE=1; shift ;;
+        --online)              ONLINE_MODE=1; shift ;;
         --force)               FORCE=1; shift ;;
         -h|--help)             usage; exit 0 ;;
         *)                     echo "Unknown option: $1" >&2; usage; exit 1 ;;
     esac
 done
 
-VALID_TARGETS="claude codex antigravity cowork cursor windsurf continue copilot cline global project all"
+validate_skill_name() {
+    if [[ ! "${SKILL_NAME}" =~ ^[A-Za-z0-9][A-Za-z0-9._-]*$ ]]; then
+        echo "Error: --skill-name must be one safe path component matching [A-Za-z0-9][A-Za-z0-9._-]*" >&2
+        exit 1
+    fi
+}
+
+VALID_TARGETS="claude codex antigravity cowork cursor windsurf continue copilot cline shared global project all"
 if ! echo "${VALID_TARGETS}" | grep -qw "${TARGET}"; then
     echo "Error: invalid --target: ${TARGET}" >&2
     echo "Valid targets: ${VALID_TARGETS}" >&2
@@ -531,9 +589,7 @@ if [[ "${SOURCE_MODE}" != "auto" && "${SOURCE_MODE}" != "local" && "${SOURCE_MOD
     exit 1
 fi
 
-if [[ "${ONLINE_MODE}" -eq 1 && "${TARGET_EXPLICIT}" -ne 1 ]]; then
-    TARGET="all"
-fi
+validate_skill_name
 
 require_cmd bash
 require_cmd python3
@@ -668,6 +724,7 @@ case "${TARGET}" in
     continue)    install_continue ;;
     copilot)     install_copilot ;;
     cline)       install_cline ;;
+    shared)      install_shared ;;
     global)
         install_tool_global "claude" || true
         install_tool_global "codex"  || true

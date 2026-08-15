@@ -132,11 +132,11 @@ Impact: <why this matters>
 Fix: <clear implementation step>
 ```
 
-## 11) Chain-of-Thought Scoring Protocol
+## 11) Reproducible Scoring Protocol
 
-Use this procedure for every scored category to minimize hallucination and improve reproducibility.
+Record auditable scoring inputs in the report. Do not expose or request private chain-of-thought.
 
-**Before assigning any numeric score, work through these steps explicitly:**
+Before assigning any numeric score, publish these concise inputs:
 
 ### Step 1 — List positive signals (max 5)
 For each signal, one sentence + one piece of evidence from the page or script output.
@@ -164,6 +164,6 @@ State the score, what drove it up, and what penalized it:
 > "Score of 62 reflects strong canonical setup and mobile-responsive layout (+), penalized by missing JSON-LD schema (Critical, −15) and two images lacking alt text (Warning×2, −10)."
 
 ### Why this matters
-Explicit derivation reduces score variance from ±20 to ±8 across equivalent pages, aligning with the anti-hallucination requirements in section 9.
+Visible evidence and arithmetic make the score reviewable without implying unsupported precision or revealing internal reasoning.
 
 > **Rule**: If you cannot complete Steps 1–3 due to missing evidence, show `Score: Insufficient data` rather than guessing.

@@ -43,9 +43,10 @@ description: >
 1. Ask for business type (or auto-detect from existing site)
 2. Load industry template from `resources/templates/`
 3. Interactive structure planning with user
-4. Apply quality gates:
-   - ⚠️ WARNING at 30+ location pages (require 60%+ unique content)
-   - 🛑 HARD STOP at 50+ location pages (require justification)
+4. Apply scaled-page quality gates:
+   - Sample representative pages and verify that each serves a distinct user need
+   - Pause generation when pages differ mainly by substituted names or locations
+   - Require documented editorial and maintenance ownership before publishing at scale
 5. Generate valid XML output
 6. Split at 50k URLs with sitemap index
 7. Generate STRUCTURE.md documentation
@@ -53,7 +54,7 @@ description: >
 ### Safe Programmatic Pages (OK at scale)
 ✅ Integration pages (with real setup docs)
 ✅ Template/tool pages (with downloadable content)
-✅ Glossary pages (200+ word definitions)
+✅ Glossary pages (clear, accurate definitions with useful context)
 ✅ Product pages (unique specs, reviews)
 ✅ User profile pages (user-generated content)
 

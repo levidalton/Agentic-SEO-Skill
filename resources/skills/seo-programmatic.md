@@ -3,7 +3,7 @@ name: seo-programmatic
 description: >
   Programmatic SEO planning and analysis for pages generated at scale from data
   sources. Covers template engines, URL patterns, internal linking automation,
-  thin content safeguards, and index bloat prevention. Use when user says
+  scaled low-value content safeguards, and index bloat prevention. Use when user says
   "programmatic SEO", "pages at scale", "dynamic pages", "template pages",
   "generated pages", or "data-driven SEO".
 ---
@@ -11,7 +11,7 @@ description: >
 # Programmatic SEO Analysis & Planning
 
 Build and audit SEO pages generated at scale from structured data sources.
-Enforces quality gates to prevent thin content penalties and index bloat.
+Applies evidence-based safeguards against scaled low-value content and index bloat.
 
 ## Data Source Assessment
 
@@ -56,11 +56,11 @@ Design templates that produce unique, valuable pages:
 ## Internal Linking Automation
 
 - **Hub/spoke model**: Category hub pages linking to individual programmatic pages
-- **Related items**: Auto-link to 3-5 related pages based on data attributes
+- **Related items**: Auto-link to genuinely related pages based on data attributes
 - **Breadcrumbs**: Generate BreadcrumbList schema from URL hierarchy
 - **Cross-linking**: Link between programmatic pages sharing attributes (same category, same city, same feature)
 - **Anchor text**: Use descriptive, varied anchor text — avoid exact-match keyword repetition
-- Link density: 3-5 internal links per 1000 words (match seo-content guidelines)
+- Link coverage: verify that useful related pages are discoverable without imposing a link-density target
 
 ## Thin Content Safeguards
 
@@ -68,10 +68,10 @@ Design templates that produce unique, valuable pages:
 
 | Metric | Threshold | Action |
 |--------|-----------|--------|
-| Pages without content review | 100+ | ⚠️ WARNING — require content audit before publishing |
-| Pages without justification | 500+ | 🛑 HARD STOP — require explicit user approval and thin content audit |
-| Unique content per page | <40% | ❌ Flag as thin content — likely penalty risk |
-| Word count per page | <300 | ⚠️ Flag for review — may lack sufficient value |
+| Repeated templates with no verified user need | Any scale | Stop and review the publishing rationale |
+| City, product, or keyword substitution without distinct value | Any scale | Flag as a doorway or scaled-content-abuse risk |
+| Substantially duplicated pages | Evidence from similarity checks | Consolidate, differentiate, canonicalize, or noindex as appropriate |
+| Short pages | Descriptive observation only | Review purpose and missing information; do not penalize length alone |
 
 ### Scaled Content Abuse — Enforcement Context (2025-2026)
 
@@ -88,7 +88,7 @@ Google's Scaled Content Abuse policy (introduced March 2024) saw major enforceme
 - **Standalone value test:** Each page should pass: "Would this page be worth publishing even if no other similar pages existed?"
 - **Site reputation abuse:** If publishing programmatic content under a high-authority domain (not your own), this may trigger site reputation abuse penalties. Google began enforcing this aggressively in November 2024.
 
-> **Recommendation:** The WARNING gate at `<40% unique content` remains appropriate. Consider a HARD STOP at `<30%` unique content to prevent scaled content abuse risk.
+> **Recommendation:** Treat uniqueness percentages as diagnostic signals, not universal pass/fail thresholds. Pause publishing when sampled pages do not provide distinct, useful value for their intended queries, and document the evidence behind that decision.
 
 ### Safe Programmatic Pages (OK at scale)
 ✅ Integration pages (with real setup docs, API details, screenshots)

@@ -187,7 +187,7 @@ competitive intent keywords with accurate, structured content.
 ### Comparison Page Template
 - `COMPARISON-PAGE.md` — Ready-to-implement page structure with sections
 - Feature matrix table
-- Content outline with word count targets (minimum 1,500 words)
+- Content outline sized to the verified comparison intent, without a word-count target
 
 ### Schema Markup
 - `comparison-schema.json` — Product/SoftwareApplication/ItemList JSON-LD

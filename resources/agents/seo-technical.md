@@ -24,7 +24,7 @@ Run these scripts from `<SKILL_DIR>/scripts/` to collect evidence:
 | `parse_html.py` | HTML element extraction + JSON-LD validation | `python3 parse_html.py --url <url> --json` |
 | `hreflang_checker.py` | International SEO validation | `python3 hreflang_checker.py <url> --json` |
 | `indexnow_checker.py` | IndexNow implementation check | `python3 indexnow_checker.py <url> --key <key> --json` |
-| `duplicate_content.py` | Near-duplicate & thin content detection | `python3 duplicate_content.py <url> --json` |
+| `duplicate_content.py` | Near-duplicate detection and content-depth review | `python3 duplicate_content.py <url> --json` |
 
 ## Core Web Vitals Reference
 

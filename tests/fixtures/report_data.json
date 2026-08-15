@@ -53,6 +53,6 @@
     "entity": {"sameas_analysis": {"total_found": 1, "total_missing_critical": 3}, "wikidata": {"found": false}, "wikipedia": {"found": false}, "issues": []},
     "link_profile": {"avg_internal_links_per_page": 4, "orphan_pages": {"count": 1}, "dead_end_pages": {"count": 0}},
     "hreflang": {"hreflang_tags_found": 0},
-    "duplicate_content": {"near_duplicates": [], "thin_pages": []}
+    "duplicate_content": {"near_duplicates": [], "content_depth_review": []}
   }
 }

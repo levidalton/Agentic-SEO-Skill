@@ -1,17 +1,29 @@
 ---
-name: seo
+name: seo-audit
 description: >
-  Deterministic LLM-first SEO audits for websites, blog posts, and GitHub
-  repositories. Use this when the user asks to "perform SEO analysis", "run SEO
-  audit", "analyze SEO", "check technical SEO", "review schema", "Core Web
-  Vitals", "E-E-A-T", "hreflang", "GEO", "AEO", or GitHub repository SEO
-  optimization. For full/page/repo audits, run bundled scripts for evidence and
-  return prioritized, confidence-labeled fixes.
+  Evidence-first SEO audits and SEO-led copywriting for websites, pages,
+  articles, local businesses, and GitHub repositories. Use automatically when
+  asked for SEO analysis, technical SEO, schema, Core Web Vitals, SEO content
+  optimization, keyword research, metadata, internal linking, hreflang, AEO/GEO, local
+  SEO, repository discoverability, or copywriting whose stated goal includes
+  search visibility. Collect observable evidence, distinguish official guidance
+  from heuristics, and return prioritized fixes with confidence and source labels.
 ---
 
-# SEO Skill (Agentic / Claude / Codex)
+# Evidence-First SEO Skill
 
 LLM-first SEO analysis skill with 16 specialized sub-skills, 10 specialist agents, and 89 scripts for website, blog, and GitHub repository optimization.
+
+## Evidence Authority
+
+Read and apply [source-policy.md](resources/references/source-policy.md) before making recommendations.
+
+- Prefer current first-party search documentation, Search Console, CrUX, and directly observed behavior.
+- Treat bundled thresholds, scores, industry studies, AEO/GEO tactics, and correlations as heuristics unless verified against a current cited source.
+- Never present a correlation, style detector, or checklist score as proof of ranking causality, a penalty, or AI authorship.
+- Treat `llms.txt` as optional interoperability metadata. Google Search states that it does not use the file for ranking or generative-search visibility.
+- Do not prescribe a word count. Evaluate whether the page satisfies its audience and intent with original, accurate, useful information.
+- For SEO-led copywriting, preserve verified brand facts and claim boundaries. Research before drafting; do not manufacture authority, locations, reviews, credentials, statistics, or customer outcomes.
 
 ## Deterministic Trigger Mapping
 
@@ -98,6 +110,8 @@ Use the LLM as the primary SEO analyst:
 
 Always read and apply `resources/references/llm-audit-rubric.md` to keep scoring, severity, confidence, and output structure consistent across audit types.
 
+Before citing any bundled numeric claim or time-sensitive recommendation, verify its source and date under `resources/references/source-policy.md`. Omit it when verification is unavailable.
+
 ### Step 4 — Run Baseline Verification Scripts (When execution is available)
 
 For full/page audits, run baseline checks to avoid hypothesis-only reporting. Do not replace LLM reasoning with script-only scoring.
@@ -106,7 +120,7 @@ For full/page audits, run baseline checks to avoid hypothesis-only reporting. Do
 # Check robots.txt and AI crawler management
 python3 <SKILL_DIR>/scripts/robots_checker.py <url>
 
-# Check llms.txt for AI search readiness
+# Inspect optional llms.txt metadata without scoring its absence
 python3 <SKILL_DIR>/scripts/llms_txt_checker.py <url>
 
 # Get Core Web Vitals from PageSpeed Insights (free API, no key needed)
@@ -186,7 +200,7 @@ For comprehensive audits, read the relevant agent file from `resources/agents/` 
 | Agent | File | Focus Area |
 |-------|------|------------|
 | Technical SEO | [seo-technical.md](resources/agents/seo-technical.md) | Crawlability, indexability, security, URLs, mobile, CWV, JS rendering |
-| Content Quality | [seo-content.md](resources/agents/seo-content.md) | E-E-A-T assessment, content metrics, AI content detection |
+| Content Quality | [seo-content.md](resources/agents/seo-content.md) | E-E-A-T evidence, content metrics, writing-pattern and content-risk review |
 | Performance | [seo-performance.md](resources/agents/seo-performance.md) | Core Web Vitals (LCP, INP, CLS), optimization recommendations |
 | Schema Markup | [seo-schema.md](resources/agents/seo-schema.md) | Detection, validation, generation of JSON-LD structured data |
 | Sitemap | [seo-sitemap.md](resources/agents/seo-sitemap.md) | XML sitemap validation, generation, quality gates |
@@ -197,7 +211,7 @@ For comprehensive audits, read the relevant agent file from `resources/agents/` 
 
 Reference the quality standards in `resources/references/`:
 
-- **Content minimums**: Read [quality-gates.md](resources/references/quality-gates.md) for word counts, unique content %, title/meta requirements
+- **Content quality**: Read [quality-gates.md](resources/references/quality-gates.md) for purpose-based completeness, originality, and title/meta review
 - **Schema validation**: Read [schema-types.md](resources/references/schema-types.md) for active/deprecated/restricted types
 - **Core Web Vitals**: Read [cwv-thresholds.md](resources/references/cwv-thresholds.md) for current metric thresholds
 - **E-E-A-T framework**: Read [eeat-framework.md](resources/references/eeat-framework.md) for scoring criteria
@@ -239,11 +253,12 @@ Use numeric scores as guidance, not as a replacement for evidence quality and ju
 
 For `seo audit`, `seo page`, and generic `perform seo analysis on <url>` flows:
 
-1. Create `FULL-AUDIT-REPORT.md` in the current working directory at the start of the audit, then update it as evidence is collected.
-2. Create `ACTION-PLAN.md` in the current working directory at the start of the audit, then update it with prioritized fixes.
+1. Create a dedicated output directory. Use a user-requested location when provided; otherwise use a task-specific temporary directory outside the audited repository.
+2. Write `FULL-AUDIT-REPORT.md` and `ACTION-PLAN.md` inside that directory. Do not place audit artifacts in a repository root unless the user explicitly requests it.
 3. If HTML dashboard was generated, include its exact saved path (for example `SEO-REPORT.html` or an absolute path).
 4. In the final response, explicitly list generated artifacts and paths.
 5. If technical checks are blocked by environment limits, still write both markdown files and include an "Environment Limitations" section.
+6. Do not edit the audited website or repository unless the user separately authorizes implementation.
 
 #### Score Interpretation
 | Score | Rating |
@@ -322,9 +337,9 @@ Checks that every reference file has a `<!-- Updated: YYYY-MM-DD -->` marker and
 
 All sub-skill reports should use consistent severity levels:
 - 🔴 **Critical** — Directly impacts rankings or indexing (fix immediately)
-- ⚠️ **Warning** — Optimization opportunity (fix within 1 month)
+- **Warning** — Optimization opportunity (fix within 1 month)
 - ✅ **Pass** — Meets or exceeds standards
-- ℹ️ **Info** — Not applicable or informational only
+- **Info** — Not applicable or informational only
 
 Structure reports as:
 1. Summary table with element, value, and severity
@@ -339,12 +354,12 @@ Structure reports as:
 2. **FAQ schema is restricted** — FAQPage schema is limited to government and healthcare authority sites only (August 2023). Do NOT recommend for commercial sites.
 3. **HowTo schema is deprecated** — Rich results fully removed September 2023. Never recommend.
 4. **JSON-LD only** — Always use `<script type="application/ld+json">`. Never recommend Microdata or RDFa.
-5. **E-E-A-T everywhere** — As of December 2025, E-E-A-T applies to ALL competitive queries, not just YMYL.
+5. **E-E-A-T is an evaluation concept** — Do not present E-E-A-T as a single measurable ranking factor. Give additional care to YMYL topics and distinguish rater guidance from direct ranking evidence.
 6. **Mobile-first is complete** — 100% mobile-first indexing since July 5, 2024.
-7. **Location page limits** — Warning at 30+ pages, hard stop at 50+ pages. Enforce unique content requirements.
+7. **Location-page quality over quotas** — Flag doorway patterns and duplicated pages from evidence. Never represent arbitrary page-count thresholds as Google limits.
 8. **AI crawler management** — Check robots.txt for GPTBot, ClaudeBot, PerplexityBot, Applebot-Extended, Google-Extended, Bytespider, CCBot.
 9. **LLM-first, resilient pipeline** — Start by reading the page with `read_url_content`, then always run relevant scripts for structured evidence. Scripts are the **preferred** evidence source — use them actively. However, if any script fails (timeout, network, parsing), the LLM MUST still produce a complete analysis using its own reasoning (confidence: `Likely`). Never block a report on a single script failure.
-10. **Always produce file artifacts for audit flows** — `FULL-AUDIT-REPORT.md` and `ACTION-PLAN.md` are required outputs for full/page audit requests.
+10. **Isolate audit artifacts** — `FULL-AUDIT-REPORT.md` and `ACTION-PLAN.md` are required for full/page audits, but must use the dedicated output directory described in Step 8.
 11. **Bound evidence retries** — Avoid long search/retry loops. If core checks fail due DNS/network, finalize promptly with confidence labels and file outputs.
 12. **Avoid redundant web fallbacks** — If direct fetch/scripts fail and one fallback also fails, stop retrying and finish the report with explicit limitations.
 13. **Signal freshness tracking** — Every reference file should contain a `<!-- Updated: YYYY-MM-DD -->` comment. Flag any reference file older than 90 days for review. When Google announces algorithm changes, verify affected reference files within 7 days. Key dates to track: core updates (quarterly), schema deprecations (schema-types.md), CWV threshold changes (cwv-thresholds.md).
